@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Superfícies — fundo cinza muito claro, cards brancos */
+    --background: 220 24% 97.5%;
+    --foreground: 224 32% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 32% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 32% 12%;
+
+    /* Marca — índigo profundo e sóbrio */
+    --primary: 243 68% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 95%;
+    --secondary-foreground: 224 28% 20%;
+
+    --muted: 220 20% 95%;
+    --muted-foreground: 220 12% 46%;
+
+    --accent: 220 22% 94%;
+    --accent-foreground: 224 28% 20%;
+
+    /* Semânticas */
+    --success: 152 58% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 92% 48%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 356 72% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Bordas e foco */
+    --border: 220 18% 90%;
+    --input: 220 18% 90%;
+    --ring: 243 68% 56%;
+
+    /* Sidebar */
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 224 20% 32%;
+    --sidebar-accent: 243 68% 56%;
+    --sidebar-border: 220 18% 92%;
+
+    /* Paleta de gráficos */
+    --chart-1: 243 68% 56%;
+    --chart-2: 262 70% 62%;
+    --chart-3: 168 62% 42%;
+    --chart-4: 32 92% 52%;
+    --chart-5: 220 14% 60%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 224 32% 8%;
+    --foreground: 220 20% 94%;
+    --card: 224 28% 11%;
+    --card-foreground: 220 20% 94%;
+    --popover: 224 28% 11%;
+    --popover-foreground: 220 20% 94%;
+
+    --primary: 243 72% 66%;
+    --primary-foreground: 224 32% 8%;
+
+    --secondary: 224 22% 17%;
+    --secondary-foreground: 220 20% 90%;
+
+    --muted: 224 22% 16%;
+    --muted-foreground: 220 12% 60%;
+
+    --accent: 224 22% 18%;
+    --accent-foreground: 220 20% 90%;
+
+    --success: 152 52% 46%;
+    --success-foreground: 224 32% 8%;
+    --warning: 32 88% 55%;
+    --warning-foreground: 224 32% 8%;
+    --destructive: 356 68% 58%;
+    --destructive-foreground: 224 32% 8%;
+
+    --border: 224 20% 20%;
+    --input: 224 20% 22%;
+    --ring: 243 72% 66%;
+
+    --sidebar: 224 30% 10%;
+    --sidebar-foreground: 220 16% 72%;
+    --sidebar-accent: 243 72% 66%;
+    --sidebar-border: 224 20% 18%;
+
+    --chart-1: 243 72% 68%;
+    --chart-2: 262 74% 72%;
+    --chart-3: 168 58% 50%;
+    --chart-4: 32 88% 58%;
+    --chart-5: 220 14% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1,
+      'ss01' 1,
+      'cv01' 1;
+  }
+
+  /* Números tabulares para alinhamento em tabelas e métricas */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Scrollbar discreta */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-border;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/40;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer utilities {
+  /* Utilitário para entrada escalonada de listas de cards */
+  .stagger > * {
+    animation: fade-in-up 0.4s ease-out both;
+  }
+}
