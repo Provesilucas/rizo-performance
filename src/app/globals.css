@@ -5,96 +5,98 @@
 @layer base {
   :root {
     /* Superfícies — fundo cinza muito claro, cards brancos */
-    --background: 324 16% 97.6%;
-    --foreground: 300 12% 13%;
+    /* Base neutra — off-white (#EDEDE8) + preto profundo (#272727) */
+    --background: 60 10% 97.5%;
+    --foreground: 0 0% 15%;
     --card: 0 0% 100%;
-    --card-foreground: 300 12% 13%;
+    --card-foreground: 0 0% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 300 12% 13%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Marca RIZO — magenta/framboesa */
-    --primary: 335 55% 45%;
+    /* Marca RIZO — Magenta #BA4073 */
+    --primary: 335 49% 49%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 322 16% 95%;
-    --secondary-foreground: 300 16% 22%;
+    --secondary: 60 8% 94%;
+    --secondary-foreground: 0 0% 22%;
 
-    --muted: 322 16% 95%;
-    --muted-foreground: 312 8% 45%;
+    --muted: 60 8% 94%;
+    --muted-foreground: 0 0% 42%;
 
-    --accent: 330 44% 96%;
-    --accent-foreground: 335 46% 32%;
+    --accent: 335 60% 96%;
+    --accent-foreground: 335 49% 34%;
 
-    /* Semânticas */
+    /* Semânticas (aviso alinhado ao laranja da marca) */
     --success: 156 52% 38%;
     --success-foreground: 0 0% 100%;
-    --warning: 34 86% 48%;
+    --warning: 30 80% 50%;
     --warning-foreground: 0 0% 100%;
-    --destructive: 356 70% 52%;
+    --destructive: 356 68% 52%;
     --destructive-foreground: 0 0% 100%;
 
     /* Bordas e foco */
-    --border: 322 16% 90%;
-    --input: 322 16% 90%;
-    --ring: 335 55% 45%;
+    --border: 48 8% 89%;
+    --input: 48 8% 89%;
+    --ring: 335 49% 49%;
 
-    /* Sidebar — leve tom magenta para profundidade premium */
-    --sidebar: 330 26% 99.3%;
-    --sidebar-foreground: 300 12% 34%;
-    --sidebar-accent: 335 55% 45%;
-    --sidebar-border: 326 18% 92%;
+    /* Sidebar */
+    --sidebar: 60 14% 98.8%;
+    --sidebar-foreground: 0 0% 32%;
+    --sidebar-accent: 335 49% 49%;
+    --sidebar-border: 50 10% 91%;
 
-    /* Paleta de gráficos — magenta da marca + tons harmônicos */
-    --chart-1: 335 55% 50%;
-    --chart-2: 288 42% 58%;
-    --chart-3: 172 50% 42%;
-    --chart-4: 36 84% 54%;
-    --chart-5: 315 10% 58%;
+    /* Gráficos — cores oficiais: magenta, laranja, azul, violeta + neutro */
+    --chart-1: 335 49% 50%;
+    --chart-2: 30 77% 55%;
+    --chart-3: 259 85% 62%;
+    --chart-4: 280 55% 60%;
+    --chart-5: 0 0% 62%;
 
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 288 12% 9%;
-    --foreground: 320 14% 94%;
-    --card: 286 14% 12%;
-    --card-foreground: 320 14% 94%;
-    --popover: 286 14% 12%;
-    --popover-foreground: 320 14% 94%;
+    /* Base preto profundo (#272727) + off-white */
+    --background: 0 0% 9%;
+    --foreground: 60 8% 92%;
+    --card: 0 0% 12%;
+    --card-foreground: 60 8% 92%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 60 8% 92%;
 
-    --primary: 335 64% 62%;
-    --primary-foreground: 300 25% 10%;
+    --primary: 335 62% 62%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 286 12% 18%;
-    --secondary-foreground: 320 14% 90%;
+    --secondary: 0 0% 17%;
+    --secondary-foreground: 60 8% 90%;
 
-    --muted: 286 12% 17%;
-    --muted-foreground: 315 10% 62%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 62%;
 
-    --accent: 322 16% 20%;
-    --accent-foreground: 320 14% 90%;
+    --accent: 330 22% 20%;
+    --accent-foreground: 60 8% 90%;
 
     --success: 156 50% 48%;
-    --success-foreground: 300 25% 10%;
-    --warning: 34 84% 56%;
-    --warning-foreground: 300 25% 10%;
+    --success-foreground: 0 0% 10%;
+    --warning: 30 80% 56%;
+    --warning-foreground: 0 0% 10%;
     --destructive: 356 66% 60%;
-    --destructive-foreground: 300 25% 10%;
+    --destructive-foreground: 0 0% 10%;
 
-    --border: 286 12% 21%;
-    --input: 286 12% 23%;
-    --ring: 335 64% 62%;
+    --border: 0 0% 20%;
+    --input: 0 0% 22%;
+    --ring: 335 62% 62%;
 
-    --sidebar: 288 14% 11%;
-    --sidebar-foreground: 315 12% 72%;
-    --sidebar-accent: 335 64% 62%;
-    --sidebar-border: 286 12% 19%;
+    --sidebar: 0 0% 11%;
+    --sidebar-foreground: 0 0% 72%;
+    --sidebar-accent: 335 62% 62%;
+    --sidebar-border: 0 0% 19%;
 
-    --chart-1: 335 66% 66%;
-    --chart-2: 288 50% 70%;
-    --chart-3: 172 52% 52%;
-    --chart-4: 36 84% 60%;
-    --chart-5: 315 12% 64%;
+    --chart-1: 335 64% 66%;
+    --chart-2: 30 80% 60%;
+    --chart-3: 259 85% 74%;
+    --chart-4: 280 55% 70%;
+    --chart-5: 0 0% 64%;
   }
 }
 

@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Marca da RIZO — monograma "RIZO" em grade 2×2 (SVG próprio, magenta da
- * marca via currentColor, com suporte automático a dark mode).
+ * Marca da RIZO — monograma "RIZO" em grade 2×2 (lockup oficial), na fonte
+ * da marca (Unbounded) e no magenta oficial via currentColor.
  */
 export function Logo({
   className,
@@ -14,36 +14,35 @@ export function Logo({
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
       <svg
-        viewBox="0 0 44 44"
+        viewBox="0 0 48 48"
         className="h-8 w-8 text-primary"
         role="img"
         aria-label="RIZO"
       >
         <g
           fill="currentColor"
-          fontFamily="var(--font-sans), system-ui, sans-serif"
-          fontWeight={800}
-          fontSize={23}
-          letterSpacing={-1}
+          fontFamily="var(--font-display), var(--font-sans), sans-serif"
+          fontWeight={700}
+          fontSize={19}
           textAnchor="middle"
         >
-          <text x="11" y="20">
+          <text x="13" y="21">
             R
           </text>
-          <text x="33" y="20">
+          <text x="36" y="21">
             I
           </text>
-          <text x="11" y="42">
+          <text x="13" y="45">
             Z
           </text>
-          <text x="33" y="42">
+          <text x="36" y="45">
             O
           </text>
         </g>
       </svg>
       {showWordmark && (
         <div className="flex flex-col leading-none">
-          <span className="text-sm font-semibold tracking-tight text-foreground">
+          <span className="font-display text-sm font-bold tracking-tight text-foreground">
             RIZO
           </span>
           <span className="text-[11px] font-medium text-muted-foreground">

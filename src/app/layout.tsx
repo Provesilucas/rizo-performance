@@ -1,13 +1,22 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Lexend, Unbounded } from 'next/font/google';
 
 import { AppProviders } from '@/components/providers/app-providers';
 import { cn } from '@/lib/utils';
 import './globals.css';
 
-const inter = Inter({
+// Lexend — família de apoio da marca, usada no corpo/UI (legibilidade).
+const lexend = Lexend({
   subsets: ['latin'],
   variable: '--font-sans',
+  display: 'swap',
+});
+
+// Unbounded — fonte principal/display da marca (logo e títulos de marca).
+const unbounded = Unbounded({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['500', '600', '700', '800'],
   display: 'swap',
 });
 
@@ -35,7 +44,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={cn(inter.variable, 'font-sans')}>
+      <body
+        className={cn(lexend.variable, unbounded.variable, 'font-sans')}
+      >
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
