@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Marca da RIZO. SVG próprio (sem imagem externa) para nitidez e
- * suporte automático a dark mode via currentColor.
+ * Marca da RIZO — monograma "RIZO" em grade 2×2 (SVG próprio, magenta da
+ * marca via currentColor, com suporte automático a dark mode).
  */
 export function Logo({
   className,
@@ -13,19 +13,34 @@ export function Logo({
 }) {
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-        <svg
-          viewBox="0 0 24 24"
-          className="h-5 w-5"
-          fill="none"
-          aria-hidden="true"
+      <svg
+        viewBox="0 0 44 44"
+        className="h-8 w-8 text-primary"
+        role="img"
+        aria-label="RIZO"
+      >
+        <g
+          fill="currentColor"
+          fontFamily="var(--font-sans), system-ui, sans-serif"
+          fontWeight={800}
+          fontSize={23}
+          letterSpacing={-1}
+          textAnchor="middle"
         >
-          <path
-            d="M5 19V6a2 2 0 0 1 2-2h6a4 4 0 0 1 1.2 7.8L18 19h-3l-3.2-6H8v6H5Z"
-            fill="currentColor"
-          />
-        </svg>
-      </div>
+          <text x="11" y="20">
+            R
+          </text>
+          <text x="33" y="20">
+            I
+          </text>
+          <text x="11" y="42">
+            Z
+          </text>
+          <text x="33" y="42">
+            O
+          </text>
+        </g>
+      </svg>
       {showWordmark && (
         <div className="flex flex-col leading-none">
           <span className="text-sm font-semibold tracking-tight text-foreground">

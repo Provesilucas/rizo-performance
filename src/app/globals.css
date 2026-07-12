@@ -5,25 +5,25 @@
 @layer base {
   :root {
     /* Superfícies — fundo cinza muito claro, cards brancos */
-    --background: 228 26% 97.5%;
-    --foreground: 230 30% 12%;
+    --background: 324 16% 97.6%;
+    --foreground: 300 12% 13%;
     --card: 0 0% 100%;
-    --card-foreground: 230 30% 12%;
+    --card-foreground: 300 12% 13%;
     --popover: 0 0% 100%;
-    --popover-foreground: 230 30% 12%;
+    --popover-foreground: 300 12% 13%;
 
-    /* Marca — índigo profundo, sóbrio e premium */
-    --primary: 244 56% 51%;
+    /* Marca RIZO — magenta/framboesa */
+    --primary: 335 55% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 226 22% 95%;
-    --secondary-foreground: 230 26% 20%;
+    --secondary: 322 16% 95%;
+    --secondary-foreground: 300 16% 22%;
 
-    --muted: 226 22% 95%;
-    --muted-foreground: 226 12% 46%;
+    --muted: 322 16% 95%;
+    --muted-foreground: 312 8% 45%;
 
-    --accent: 240 30% 96%;
-    --accent-foreground: 230 26% 20%;
+    --accent: 330 44% 96%;
+    --accent-foreground: 335 46% 32%;
 
     /* Semânticas */
     --success: 156 52% 38%;
@@ -34,67 +34,67 @@
     --destructive-foreground: 0 0% 100%;
 
     /* Bordas e foco */
-    --border: 226 20% 90%;
-    --input: 226 20% 90%;
-    --ring: 244 56% 51%;
+    --border: 322 16% 90%;
+    --input: 322 16% 90%;
+    --ring: 335 55% 45%;
 
-    /* Sidebar — leve tom índigo para profundidade premium */
-    --sidebar: 240 33% 99.5%;
-    --sidebar-foreground: 230 18% 34%;
-    --sidebar-accent: 244 56% 51%;
-    --sidebar-border: 232 22% 92%;
+    /* Sidebar — leve tom magenta para profundidade premium */
+    --sidebar: 330 26% 99.3%;
+    --sidebar-foreground: 300 12% 34%;
+    --sidebar-accent: 335 55% 45%;
+    --sidebar-border: 326 18% 92%;
 
-    /* Paleta de gráficos — tons refinados e coesos */
-    --chart-1: 244 58% 54%;
-    --chart-2: 258 52% 60%;
-    --chart-3: 172 52% 40%;
-    --chart-4: 34 82% 53%;
-    --chart-5: 228 12% 58%;
+    /* Paleta de gráficos — magenta da marca + tons harmônicos */
+    --chart-1: 335 55% 50%;
+    --chart-2: 288 42% 58%;
+    --chart-3: 172 50% 42%;
+    --chart-4: 36 84% 54%;
+    --chart-5: 315 10% 58%;
 
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 230 30% 8%;
-    --foreground: 220 20% 94%;
-    --card: 230 26% 11%;
-    --card-foreground: 220 20% 94%;
-    --popover: 230 26% 11%;
-    --popover-foreground: 220 20% 94%;
+    --background: 288 12% 9%;
+    --foreground: 320 14% 94%;
+    --card: 286 14% 12%;
+    --card-foreground: 320 14% 94%;
+    --popover: 286 14% 12%;
+    --popover-foreground: 320 14% 94%;
 
-    --primary: 245 68% 70%;
-    --primary-foreground: 230 40% 10%;
+    --primary: 335 64% 62%;
+    --primary-foreground: 300 25% 10%;
 
-    --secondary: 230 22% 17%;
-    --secondary-foreground: 220 20% 90%;
+    --secondary: 286 12% 18%;
+    --secondary-foreground: 320 14% 90%;
 
-    --muted: 230 22% 16%;
-    --muted-foreground: 224 12% 62%;
+    --muted: 286 12% 17%;
+    --muted-foreground: 315 10% 62%;
 
-    --accent: 232 24% 19%;
-    --accent-foreground: 220 20% 90%;
+    --accent: 322 16% 20%;
+    --accent-foreground: 320 14% 90%;
 
     --success: 156 50% 48%;
-    --success-foreground: 230 40% 10%;
+    --success-foreground: 300 25% 10%;
     --warning: 34 84% 56%;
-    --warning-foreground: 230 40% 10%;
+    --warning-foreground: 300 25% 10%;
     --destructive: 356 66% 60%;
-    --destructive-foreground: 230 40% 10%;
+    --destructive-foreground: 300 25% 10%;
 
-    --border: 230 20% 20%;
-    --input: 230 20% 22%;
-    --ring: 245 68% 70%;
+    --border: 286 12% 21%;
+    --input: 286 12% 23%;
+    --ring: 335 64% 62%;
 
-    --sidebar: 232 32% 10%;
-    --sidebar-foreground: 224 16% 72%;
-    --sidebar-accent: 245 68% 70%;
-    --sidebar-border: 232 22% 18%;
+    --sidebar: 288 14% 11%;
+    --sidebar-foreground: 315 12% 72%;
+    --sidebar-accent: 335 64% 62%;
+    --sidebar-border: 286 12% 19%;
 
-    --chart-1: 245 70% 72%;
-    --chart-2: 258 60% 74%;
+    --chart-1: 335 66% 66%;
+    --chart-2: 288 50% 70%;
     --chart-3: 172 52% 52%;
-    --chart-4: 34 84% 60%;
-    --chart-5: 228 14% 66%;
+    --chart-4: 36 84% 60%;
+    --chart-5: 315 12% 64%;
   }
 }
 
