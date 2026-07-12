@@ -46,7 +46,7 @@ const REPORTS = [
 
 export default function ReportsPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Relatórios"
         description="Gere e exporte relatórios executivos da agência."

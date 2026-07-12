@@ -34,7 +34,7 @@ async function CommercialContent({ period }: { period: PeriodRange }) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <TopComercialCard seller={topSeller} />
         <StatCard
@@ -80,7 +80,7 @@ export default function CommercialPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Comercial"
         description="Metas, ranking e desempenho do time comercial."

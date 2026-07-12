@@ -35,10 +35,10 @@ export function SidebarNav({ onNavigate }: SidebarNavProps) {
                 onClick={onNavigate}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
                   isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-sidebar-foreground hover:bg-accent hover:text-accent-foreground',
+                    ? 'bg-secondary font-medium text-foreground'
+                    : 'font-medium text-sidebar-foreground hover:bg-secondary/70 hover:text-foreground',
                 )}
               >
                 <span
@@ -52,8 +52,8 @@ export function SidebarNav({ onNavigate }: SidebarNavProps) {
                   className={cn(
                     'h-[18px] w-[18px] shrink-0 transition-colors',
                     isActive
-                      ? 'text-primary'
-                      : 'text-muted-foreground group-hover:text-accent-foreground',
+                      ? 'text-foreground'
+                      : 'text-muted-foreground group-hover:text-foreground',
                   )}
                 />
                 {item.title}

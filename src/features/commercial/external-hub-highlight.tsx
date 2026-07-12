@@ -38,7 +38,7 @@ export function ExternalHubHighlight({ hub }: { hub: ExternalHub }) {
           </p>
 
           <div className="mt-4 flex flex-wrap items-end gap-3">
-            <span className="text-3xl font-semibold tracking-tight tabular-nums text-foreground">
+            <span className="text-3xl font-medium tracking-tight tabular-nums text-foreground">
               {formatCurrency(hub.total)}
             </span>
             <TrendPill value={hub.growthPercent} className="mb-1" />

@@ -29,7 +29,7 @@ async function ContractsContent({ period }: { period: PeriodRange }) {
   const legal = summarizeLegal(data);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           label="Valor total"
@@ -64,7 +64,7 @@ export default function ContractsPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Contratos"
         description="Gestão de todos os contratos da agência."

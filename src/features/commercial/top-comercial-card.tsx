@@ -28,7 +28,7 @@ export function TopComercialCard({ seller }: { seller?: Salesperson }) {
         </div>
       </div>
 
-      <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
+      <p className="mt-3 text-2xl font-medium tracking-tight text-foreground">
         {seller?.name ?? '—'}
       </p>
 

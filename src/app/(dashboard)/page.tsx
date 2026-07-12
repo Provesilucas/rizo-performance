@@ -82,7 +82,7 @@ async function DashboardContent({ period }: { period: PeriodRange }) {
   }).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {expiring > 0 && (
         <AlertBanner
           message={

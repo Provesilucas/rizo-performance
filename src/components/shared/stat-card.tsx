@@ -37,7 +37,7 @@ export function StatCard({
           </div>
         )}
       </div>
-      <p className="mt-3 text-2xl font-semibold tabular-nums tracking-tight text-foreground">
+      <p className="mt-3 text-2xl font-medium tabular-nums tracking-tight text-foreground">
         {value}
       </p>
       {delta !== undefined && (

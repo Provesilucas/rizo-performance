@@ -22,7 +22,7 @@ async function ReceivablesContent({ period }: { period: PeriodRange }) {
     data.filter((r) => r.status === status).reduce((s, r) => s + r.value, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           label="A vencer"
@@ -49,7 +49,7 @@ export default function ReceivablesPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Recebimentos"
         description="Controle de contas a receber e pagamentos em atraso."

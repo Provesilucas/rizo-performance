@@ -22,7 +22,7 @@ async function BrandsContent({ period }: { period: PeriodRange }) {
   const activeContracts = data.reduce((s, b) => s + b.activeContracts, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard label="Marcas" value={String(data.length)} icon={Building2} />
         <StatCard
@@ -50,7 +50,7 @@ export default function BrandsPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Marcas"
         description="Desempenho e relacionamento com as marcas parceiras."

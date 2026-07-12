@@ -33,7 +33,7 @@ async function FinancialContent({ period }: { period: PeriodRange }) {
   const current = data.monthlyRevenue[data.monthlyRevenue.length - 1];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Recebido no mês"
@@ -191,7 +191,7 @@ export default function FinancialPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Financeiro"
         description="Receita, recebimentos e saúde financeira da agência."

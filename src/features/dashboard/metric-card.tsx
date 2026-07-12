@@ -52,7 +52,7 @@ export function MetricCard({ metric, index = 0 }: MetricCardProps) {
         </p>
         <p
           className={cn(
-            'text-2xl font-semibold tabular-nums tracking-tight text-foreground',
+            'text-2xl font-medium tabular-nums tracking-tight text-foreground',
           )}
         >
           {formatMetricValue(metric)}

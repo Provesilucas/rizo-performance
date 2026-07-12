@@ -22,7 +22,7 @@ async function InfluencersContent({ period }: { period: PeriodRange }) {
   const activeCampaigns = data.reduce((s, i) => s + i.activeCampaigns, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           label="Influenciadores ativos"
@@ -54,7 +54,7 @@ export default function InfluencersPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Influenciadores"
         description="Desempenho, faturamento e campanhas por influenciador."

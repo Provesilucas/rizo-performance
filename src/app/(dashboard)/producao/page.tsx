@@ -29,7 +29,7 @@ async function ProductionContent({ period }: { period: PeriodRange }) {
   const { data } = await productionService.getData(period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Vídeos entregues"
@@ -118,7 +118,7 @@ export default function ProductionPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <SectionHeader
         title="Produção de conteúdo"
         description="Desempenho do pipeline de edição — Rizo Director AI."
