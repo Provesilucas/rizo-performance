@@ -1,4 +1,4 @@
-import { Rocket, Users } from 'lucide-react';
+import { TrendingUp, Users } from 'lucide-react';
 
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,17 +20,17 @@ export function ExternalHubHighlight({ hub }: { hub: ExternalHub }) {
   const goalPercent = hub.target > 0 ? (hub.total / hub.target) * 100 : 0;
 
   return (
-    <Card className="overflow-hidden border-primary/30 bg-gradient-to-br from-primary/[0.06] via-transparent to-chart-2/[0.06]">
+    <Card className="overflow-hidden border-l-2 border-l-primary">
       <div className="grid gap-6 p-6 lg:grid-cols-[1.1fr_1fr]">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15 text-primary">
-              <Rocket className="h-5 w-5" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <TrendingUp className="h-5 w-5" />
             </div>
             <h3 className="text-base font-semibold text-foreground">
               Hub externo
             </h3>
-            <Badge variant="default">Virada de chave</Badge>
+            <Badge variant="secondary">Prioridade estratégica</Badge>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
             Influenciadores fora do casting exclusivo — foco de crescimento para
@@ -60,10 +60,7 @@ export function ExternalHubHighlight({ hub }: { hub: ExternalHub }) {
                 {formatPercent(goalPercent, 0)}
               </span>
             </div>
-            <ProgressBar
-              value={goalPercent}
-              indicatorClassName="bg-gradient-to-r from-primary to-chart-2"
-            />
+            <ProgressBar value={goalPercent} indicatorClassName="bg-primary" />
           </div>
         </div>
 
@@ -77,7 +74,7 @@ export function ExternalHubHighlight({ hub }: { hub: ExternalHub }) {
               dataKey="value"
               name="Faturamento externo"
               format="currency-compact"
-              color="hsl(var(--chart-2))"
+              color="hsl(var(--primary))"
               height={168}
             />
           </div>

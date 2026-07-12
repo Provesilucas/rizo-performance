@@ -29,7 +29,7 @@ export function BrandCard({ brand }: { brand: Brand }) {
   return (
     <Card className="p-5 transition-shadow duration-200 hover:shadow-card-hover">
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br from-primary/15 to-chart-2/15 text-sm font-semibold text-primary">
+        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-foreground">
           {initials(brand.name)}
         </div>
         <div className="min-w-0 flex-1">

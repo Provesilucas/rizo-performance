@@ -45,12 +45,12 @@
     --sidebar-accent: 335 49% 49%;
     --sidebar-border: 50 10% 91%;
 
-    /* Gráficos — cores oficiais: magenta, laranja, azul, violeta + neutro */
-    --chart-1: 335 49% 50%;
-    --chart-2: 30 77% 55%;
-    --chart-3: 259 85% 62%;
-    --chart-4: 280 55% 60%;
-    --chart-5: 0 0% 62%;
+    /* Gráficos — magenta da marca + neutros sóbrios (leitura executiva) */
+    --chart-1: 335 49% 48%;
+    --chart-2: 230 12% 52%;
+    --chart-3: 330 28% 40%;
+    --chart-4: 32 30% 52%;
+    --chart-5: 228 10% 74%;
 
     --radius: 0.75rem;
   }
@@ -92,11 +92,11 @@
     --sidebar-accent: 335 62% 62%;
     --sidebar-border: 0 0% 19%;
 
-    --chart-1: 335 64% 66%;
-    --chart-2: 30 80% 60%;
-    --chart-3: 259 85% 74%;
-    --chart-4: 280 55% 70%;
-    --chart-5: 0 0% 64%;
+    --chart-1: 335 60% 64%;
+    --chart-2: 228 12% 62%;
+    --chart-3: 330 34% 58%;
+    --chart-4: 32 34% 58%;
+    --chart-5: 228 8% 48%;
   }
 }
 

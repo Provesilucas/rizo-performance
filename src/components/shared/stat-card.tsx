@@ -32,7 +32,7 @@ export function StatCard({
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">{label}</p>
         {IconComp && (
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-muted-foreground">
             <IconComp className="h-4 w-4" />
           </div>
         )}
