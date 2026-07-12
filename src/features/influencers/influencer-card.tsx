@@ -34,7 +34,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 export function InfluencerCard({ influencer }: { influencer: Influencer }) {
   return (
-    <Card className="p-5 transition-shadow duration-200 hover:shadow-card-hover">
+    <Card className="p-5 transition-colors duration-200 hover:border-foreground/20">
       <div className="flex items-center gap-3">
         <Avatar className="h-11 w-11">
           <AvatarFallback className="bg-primary/10 text-sm text-primary">

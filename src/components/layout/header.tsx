@@ -26,7 +26,7 @@ export function Header({ user }: HeaderProps) {
   const description = active?.description;
 
   return (
-    <header className="sticky top-0 z-20 border-b border-border/70 bg-background/80 backdrop-blur-md">
+    <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
         <MobileSidebar />
 

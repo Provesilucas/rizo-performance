@@ -58,7 +58,7 @@ export default function ReportsPage() {
           return (
             <Card
               key={report.id}
-              className="flex flex-col justify-between p-5 transition-shadow duration-200 hover:shadow-card-hover"
+              className="flex flex-col justify-between p-5 transition-colors duration-200 hover:border-foreground/20"
             >
               <div>
                 <div className="flex items-start justify-between">

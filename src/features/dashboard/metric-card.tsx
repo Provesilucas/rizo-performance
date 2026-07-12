@@ -25,7 +25,7 @@ interface MetricCardProps {
 export function MetricCard({ metric, index = 0 }: MetricCardProps) {
   return (
     <Card
-      className="animate-fade-in-up p-5 transition-shadow duration-200 hover:shadow-card-hover"
+      className="animate-fade-in-up p-5 transition-colors duration-200 hover:border-foreground/20"
       style={{ animationDelay: `${Math.min(index, 10) * 40}ms` }}
     >
       <div className="flex items-start justify-between gap-3">

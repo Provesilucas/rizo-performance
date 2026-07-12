@@ -27,7 +27,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 export function BrandCard({ brand }: { brand: Brand }) {
   return (
-    <Card className="p-5 transition-shadow duration-200 hover:shadow-card-hover">
+    <Card className="p-5 transition-colors duration-200 hover:border-foreground/20">
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-sm font-semibold text-foreground">
           {initials(brand.name)}
