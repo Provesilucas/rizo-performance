@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Megaphone, TrendingUp, Users } from 'lucide-react';
 
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import { InfluencerCard } from '@/features/influencers/influencer-card';
 import { CardsPageSkeleton } from '@/features/shared/page-skeletons';
 import { influencersService } from '@/services';
@@ -54,14 +54,8 @@ export default function InfluencersPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Influenciadores"
-        description="Desempenho, faturamento e campanhas por influenciador."
-      />
-      <Suspense key={period} fallback={<CardsPageSkeleton />}>
-        <InfluencersContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<CardsPageSkeleton />}>
+      <InfluencersContent period={period} />
+    </Suspense>
   );
 }

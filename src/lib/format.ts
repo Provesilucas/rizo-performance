@@ -40,6 +40,25 @@ export function formatCurrencyCompact(value: number): string {
   return BRL.format(value);
 }
 
+/**
+ * Versão para eixos de gráfico: compacta e sem o prefixo "R$",
+ * evitando quebra de linha nos rótulos. Ex.: "1,8 mi", "450 mil".
+ */
+export function formatCurrencyAxis(value: number): string {
+  const abs = Math.abs(value);
+  if (abs >= 1_000_000) {
+    return `${(value / 1_000_000).toLocaleString('pt-BR', {
+      maximumFractionDigits: 1,
+    })} mi`;
+  }
+  if (abs >= 1_000) {
+    return `${(value / 1_000).toLocaleString('pt-BR', {
+      maximumFractionDigits: 0,
+    })} mil`;
+  }
+  return value.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+}
+
 /** Formata número inteiro/decimal com separador pt-BR. */
 export function formatNumber(value: number): string {
   return NUMBER.format(value);

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import {
   SimpleAreaChart,
   SimpleBarChart,
@@ -191,14 +191,8 @@ export default function FinancialPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Financeiro"
-        description="Receita, recebimentos e saúde financeira da agência."
-      />
-      <Suspense key={period} fallback={<ChartsPageSkeleton />}>
-        <FinancialContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<ChartsPageSkeleton />}>
+      <FinancialContent period={period} />
+    </Suspense>
   );
 }

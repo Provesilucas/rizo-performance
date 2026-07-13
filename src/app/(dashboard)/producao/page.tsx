@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import { DistributionList } from '@/features/financial/distribution-list';
 import { ProductionChart } from '@/features/production/production-chart';
 import { QualityChecks } from '@/features/production/quality-checks';
@@ -118,14 +118,8 @@ export default function ProductionPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Produção de conteúdo"
-        description="Desempenho do pipeline de edição — Rizo Director AI."
-      />
-      <Suspense key={period} fallback={<ChartsPageSkeleton />}>
-        <ProductionContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<ChartsPageSkeleton />}>
+      <ProductionContent period={period} />
+    </Suspense>
   );
 }

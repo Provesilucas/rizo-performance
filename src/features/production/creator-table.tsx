@@ -36,7 +36,7 @@ export function CreatorTable({ rows }: { rows: ProductionByCreator[] }) {
             <TableCell>
               <div className="flex items-center gap-3">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-primary/10 text-primary">
+                  <AvatarFallback className="bg-secondary font-medium text-muted-foreground">
                     {row.name.slice(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>

@@ -32,7 +32,7 @@ export function TopInfluencers({
             {index + 1}
           </span>
           <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-primary/10 text-primary">
+            <AvatarFallback className="bg-secondary font-medium text-muted-foreground">
               {initials(influencer.name)}
             </AvatarFallback>
           </Avatar>

@@ -80,14 +80,8 @@ export default function CommercialPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Comercial"
-        description="Metas, ranking e desempenho do time comercial."
-      />
-      <Suspense key={period} fallback={<TablePageSkeleton />}>
-        <CommercialContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<TablePageSkeleton />}>
+      <CommercialContent period={period} />
+    </Suspense>
   );
 }

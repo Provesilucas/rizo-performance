@@ -14,7 +14,7 @@ import {
 
 import { ChartTooltip } from '@/components/charts/chart-tooltip';
 import type { GoalEvolutionPoint } from '@/interfaces';
-import { formatCurrencyCompact } from '@/lib/format';
+import { formatCurrencyAxis } from '@/lib/format';
 
 /** Marca do dia atual: último ponto com `realized` preenchido. */
 function resolveTodayLabel(series: GoalEvolutionPoint[]): string | undefined {
@@ -89,9 +89,9 @@ export function GoalEvolutionChart({
           <YAxis
             tickLine={false}
             axisLine={false}
-            width={64}
+            width={52}
             tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-            tickFormatter={(value: number) => formatCurrencyCompact(value)}
+            tickFormatter={(value: number) => formatCurrencyAxis(value)}
           />
           <Tooltip
             content={<ChartTooltip labelPrefix={labelPrefix} />}

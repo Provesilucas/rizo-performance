@@ -129,7 +129,7 @@ export function MetasComerciais({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9">
-                    <AvatarFallback className="bg-primary/10 text-primary">
+                    <AvatarFallback className="bg-secondary font-medium text-muted-foreground">
                       {initials(person.name)}
                     </AvatarFallback>
                   </Avatar>

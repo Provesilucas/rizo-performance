@@ -36,6 +36,20 @@ ambiente, sem alterar a interface.
 
 ---
 
+## 🎨 Identidade visual
+
+Segue o manual de marca oficial da RIZO:
+
+- **Cores** — Magenta RIZO `#BA4073` (principal), Azul intenso `#5206FA`,
+  Violeta `#A957D1`, Laranja `#E58A32`, Off-white `#EDEDE8` e Preto profundo
+  `#272727`. Tokens em `src/app/globals.css` (modo claro e escuro).
+- **Tipografia** — [Unbounded](https://fonts.google.com/specimen/Unbounded)
+  (display/marca) e [Lexend](https://fonts.google.com/specimen/Lexend)
+  (corpo/UI), carregadas via `next/font`.
+- **Logo** — monograma "RIZO" em grade 2×2 (`src/components/layout/logo.tsx`).
+
+---
+
 ## 🧱 Stack
 
 | Camada        | Tecnologia                                    |

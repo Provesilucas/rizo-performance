@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { Building2, DollarSign, Handshake } from 'lucide-react';
 
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import { BrandCard } from '@/features/brands/brand-card';
 import { CardsPageSkeleton } from '@/features/shared/page-skeletons';
 import { brandsService } from '@/services';
@@ -50,14 +50,8 @@ export default function BrandsPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Marcas"
-        description="Desempenho e relacionamento com as marcas parceiras."
-      />
-      <Suspense key={period} fallback={<CardsPageSkeleton />}>
-        <BrandsContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<CardsPageSkeleton />}>
+      <BrandsContent period={period} />
+    </Suspense>
   );
 }

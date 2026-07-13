@@ -15,6 +15,7 @@ import {
 import { ChartTooltip } from '@/components/charts/chart-tooltip';
 import {
   formatCurrency,
+  formatCurrencyAxis,
   formatCurrencyCompact,
   formatNumber,
 } from '@/lib/format';
@@ -26,10 +27,18 @@ import {
  */
 export type ChartValueFormat = 'number' | 'currency' | 'currency-compact';
 
+/** Formatação completa (tooltip). */
 const FORMATTERS: Record<ChartValueFormat, (value: number) => string> = {
   number: formatNumber,
   currency: formatCurrency,
   'currency-compact': formatCurrencyCompact,
+};
+
+/** Formatação enxuta para o eixo Y (sem "R$", evita quebra de linha). */
+const AXIS_FORMATTERS: Record<ChartValueFormat, (value: number) => string> = {
+  number: formatNumber,
+  currency: formatCurrencyAxis,
+  'currency-compact': formatCurrencyAxis,
 };
 
 interface SimpleChartProps {
@@ -52,6 +61,7 @@ export function SimpleBarChart({
   height = 240,
 }: SimpleChartProps) {
   const valueFormatter = FORMATTERS[format];
+  const axisFormatter = AXIS_FORMATTERS[format];
   return (
     <div style={{ height }} className="w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -71,9 +81,9 @@ export function SimpleBarChart({
           <YAxis
             tickLine={false}
             axisLine={false}
-            width={40}
+            width={44}
             tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-            tickFormatter={(value: number) => valueFormatter(value)}
+            tickFormatter={(value: number) => axisFormatter(value)}
           />
           <Tooltip
             content={<ChartTooltip valueFormatter={valueFormatter} />}
@@ -102,6 +112,7 @@ export function SimpleAreaChart({
   height = 240,
 }: SimpleChartProps) {
   const valueFormatter = FORMATTERS[format];
+  const axisFormatter = AXIS_FORMATTERS[format];
   const gradientId = `area-${dataKey}`;
   return (
     <div style={{ height }} className="w-full">
@@ -131,9 +142,9 @@ export function SimpleAreaChart({
           <YAxis
             tickLine={false}
             axisLine={false}
-            width={56}
+            width={44}
             tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-            tickFormatter={(value: number) => valueFormatter(value)}
+            tickFormatter={(value: number) => axisFormatter(value)}
           />
           <Tooltip
             content={<ChartTooltip valueFormatter={valueFormatter} />}

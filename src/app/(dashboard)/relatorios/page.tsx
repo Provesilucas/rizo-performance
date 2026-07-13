@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { EmptyState, SectionHeader } from '@/components/shared';
+import { EmptyState } from '@/components/shared';
 
 export const metadata = { title: 'Relatórios' };
 
@@ -47,11 +47,6 @@ const REPORTS = [
 export default function ReportsPage() {
   return (
     <div className="space-y-8">
-      <SectionHeader
-        title="Relatórios"
-        description="Gere e exporte relatórios executivos da agência."
-      />
-
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {REPORTS.map((report) => {
           const Icon = report.icon;

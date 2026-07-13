@@ -134,9 +134,3 @@
   }
 }
 
-@layer utilities {
-  /* Utilitário para entrada escalonada de listas de cards */
-  .stagger > * {
-    animation: fade-in-up 0.4s ease-out both;
-  }
-}

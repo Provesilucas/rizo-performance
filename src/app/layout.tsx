@@ -21,6 +21,7 @@ const unbounded = Unbounded({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://rizo-performance.vercel.app'),
   title: {
     default: 'RIZO Performance',
     template: '%s · RIZO Performance',
@@ -28,6 +29,14 @@ export const metadata: Metadata = {
   description:
     'Plataforma executiva de gestão e performance da agência RIZO — comercial, financeiro e influenciadores em um só lugar.',
   applicationName: 'RIZO Performance',
+  openGraph: {
+    title: 'RIZO Performance',
+    description:
+      'Painel executivo da agência RIZO — metas, comercial, financeiro e influenciadores em tempo real.',
+    siteName: 'RIZO Performance',
+    locale: 'pt_BR',
+    type: 'website',
+  },
 };
 
 export const viewport: Viewport = {

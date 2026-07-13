@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { CheckCircle2, FileText, Scale } from 'lucide-react';
 
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import { ContractsTable } from '@/features/contracts/contracts-table';
 import {
   LegalRiskCard,
@@ -64,14 +64,8 @@ export default function ContractsPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Contratos"
-        description="Gestão de todos os contratos da agência."
-      />
-      <Suspense key={period} fallback={<TablePageSkeleton />}>
-        <ContractsContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<TablePageSkeleton />}>
+      <ContractsContent period={period} />
+    </Suspense>
   );
 }

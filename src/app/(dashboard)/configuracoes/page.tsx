@@ -10,7 +10,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SectionHeader } from '@/components/shared';
 import { AppearanceSettings } from '@/features/settings/appearance-settings';
 import { env } from '@/lib/env';
 
@@ -36,14 +35,9 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
-      <SectionHeader
-        title="Configurações"
-        description="Gerencie perfil, aparência e integrações da plataforma."
-      />
-
       <Card>
         <CardHeader className="flex-row items-center gap-3 border-b border-border/60">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground">
             <UserCircle className="h-5 w-5" />
           </div>
           <div>
@@ -71,7 +65,7 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader className="flex-row items-center gap-3 border-b border-border/60">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground">
             <Palette className="h-5 w-5" />
           </div>
           <div>
@@ -86,7 +80,7 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader className="flex-row items-center gap-3 border-b border-border/60">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground">
             <Database className="h-5 w-5" />
           </div>
           <div>

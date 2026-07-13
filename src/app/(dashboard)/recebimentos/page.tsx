@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { AlertCircle, CheckCircle2, Clock } from 'lucide-react';
 
-import { SectionHeader, StatCard } from '@/components/shared';
+import { StatCard } from '@/components/shared';
 import { ReceivablesTable } from '@/features/receivables/receivables-table';
 import { TablePageSkeleton } from '@/features/shared/page-skeletons';
 import { receivablesService } from '@/services';
@@ -49,14 +49,8 @@ export default function ReceivablesPage({ searchParams }: PageProps) {
   const period = parsePeriod(searchParams.period);
 
   return (
-    <div className="space-y-8">
-      <SectionHeader
-        title="Recebimentos"
-        description="Controle de contas a receber e pagamentos em atraso."
-      />
-      <Suspense key={period} fallback={<TablePageSkeleton />}>
-        <ReceivablesContent period={period} />
-      </Suspense>
-    </div>
+    <Suspense key={period} fallback={<TablePageSkeleton />}>
+      <ReceivablesContent period={period} />
+    </Suspense>
   );
 }

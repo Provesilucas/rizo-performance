@@ -16,7 +16,7 @@ import {
 import { ChartTooltip } from '@/components/charts/chart-tooltip';
 import { Button } from '@/components/ui/button';
 import type { MonthlyRevenuePoint } from '@/interfaces';
-import { formatCurrencyCompact } from '@/lib/format';
+import { formatCurrencyAxis } from '@/lib/format';
 
 /** Ano anterior ao dos dados (para o rótulo do comparativo). */
 function previousYearLabel(data: MonthlyRevenuePoint[]): string {
@@ -65,9 +65,9 @@ export function RevenueChart({ data }: { data: MonthlyRevenuePoint[] }) {
             <YAxis
               tickLine={false}
               axisLine={false}
-              width={56}
+              width={52}
               tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-              tickFormatter={(value: number) => formatCurrencyCompact(value)}
+              tickFormatter={(value: number) => formatCurrencyAxis(value)}
             />
             <Tooltip
               content={<ChartTooltip />}
