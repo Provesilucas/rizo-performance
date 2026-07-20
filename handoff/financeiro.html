@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Financeiro · RIZO Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<style>/* ==========================================================================
+   RIZO Performance — folha de estilo do handoff estático (referência do dev)
+   Identidade oficial: magenta #BA4073 + off-white / preto profundo
+   Fontes: Unbounded (display/logo) + Lexend (corpo)
+   Estes tokens espelham 1:1 os do app (src/app/globals.css).
+========================================================================== */
+:root {
+  --bg: #f7f7f4;
+  --fg: #262626;
+  --card: #ffffff;
+  --primary: #ba4073; /* MAGENTA RIZO */
+  --primary-weak: #f7e6ee;
+  --secondary: #f0efeb;
+  --muted-fg: #6b6b6b;
+  --border: #e6e4e0;
+  --success: #2f9367;
+  --warning: #e08a1e;
+  --danger: #cf3b34;
+  --sidebar: #fcfcfa;
+  --chart-1: #ba4073;
+  --chart-2: #757c8e;
+  --chart-5: #b6bac4;
+  --radius: 12px;
+  --sidebar-w: 256px;
+  --maxw: 1440px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Lexend', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+.tnum { font-variant-numeric: tabular-nums; }
+.display { font-family: 'Unbounded', 'Lexend', sans-serif; }
+.muted { color: var(--muted-fg); }
+.green { color: var(--success); }
+
+/* ---------- Layout ---------- */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: var(--sidebar-w); flex: 0 0 var(--sidebar-w);
+  background: var(--sidebar); border-right: 1px solid var(--border);
+  position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column;
+}
+.content { flex: 1; min-width: 0; }
+.main { max-width: var(--maxw); margin: 0 auto; padding: 40px 32px; }
+.stack > * + * { margin-top: 32px; }
+.grid { display: grid; gap: 24px; }
+.two { grid-template-columns: 1fr 1fr; }
+.three { grid-template-columns: repeat(3, 1fr); }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpis.k3 { grid-template-columns: repeat(3, 1fr); }
+
+/* ---------- Logo ---------- */
+.logo { display: flex; align-items: center; gap: 10px; height: 64px; padding: 0 20px; border-bottom: 1px solid var(--border); }
+.logo svg { width: 32px; height: 32px; color: var(--primary); }
+.logo .wm b { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; display: block; line-height: 1; }
+.logo .wm span { font-size: 11px; color: var(--muted-fg); }
+
+/* ---------- Nav ---------- */
+nav { padding: 16px 12px; flex: 1; overflow: auto; }
+.nav-group { margin-bottom: 20px; }
+.nav-group > p { margin: 0 0 4px; padding: 0 12px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #9a9a9a; }
+.nav-item { position: relative; display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 10px; font-weight: 500; color: #4a4a4a; text-decoration: none; font-size: 14px; }
+.nav-item svg { width: 18px; height: 18px; color: var(--muted-fg); flex: 0 0 18px; }
+.nav-item:hover { background: #f2f1ee; }
+.nav-item.active { background: var(--secondary); color: var(--fg); }
+.nav-item.active svg { color: var(--fg); }
+.nav-item.active::before { content: ''; position: absolute; left: 0; height: 20px; width: 4px; border-radius: 0 4px 4px 0; background: var(--primary); }
+.sidebar-foot { margin: 0 12px 16px; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+.sidebar-foot .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); flex: 0 0 8px; }
+
+/* ---------- Topbar ---------- */
+.topbar { position: sticky; top: 0; z-index: 5; background: rgba(247,247,244,.85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); }
+.topbar-inner { max-width: var(--maxw); margin: 0 auto; height: 64px; padding: 0 32px; display: flex; align-items: center; gap: 12px; }
+.page-title { margin: 0; font-size: 18px; font-weight: 600; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+.page-sub { margin: 0; font-size: 12px; color: var(--muted-fg); }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-fg); font-weight: 400; }
+.live .pulse { width: 8px; height: 8px; border-radius: 50%; background: #e5352b; animation: pulse 1.6s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(229,53,43,.5);} 70% { box-shadow: 0 0 0 6px rgba(229,53,43,0);} 100% { box-shadow: 0 0 0 0 rgba(229,53,43,0);} }
+.spacer { flex: 1; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 1px solid var(--border); background: var(--card); border-radius: 8px; font-size: 14px; color: var(--fg); cursor: pointer; }
+.btn.icon { width: 36px; padding: 0; justify-content: center; }
+.btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn.sm { height: 32px; font-size: 13px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--primary-weak); color: var(--primary); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+
+/* ---------- Cards ---------- */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+.card.pad { padding: 20px; }
+.card.hub { border-left: 3px solid var(--primary); }
+.card-head { padding: 20px; border-bottom: 1px solid var(--border); }
+.card-head h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.card-head p { margin: 4px 0 0; font-size: 13px; color: var(--muted-fg); }
+.card-body { padding: 24px 20px 20px; }
+.card-body.tight { padding: 20px; }
+.card-body.p0 { padding: 0; }
+
+/* ---------- KPI / stat ---------- */
+.kpi-label { display: flex; align-items: center; justify-content: space-between; color: var(--muted-fg); font-size: 14px; font-weight: 500; }
+.chip { width: 32px; height: 32px; border-radius: 8px; background: var(--secondary); color: var(--muted-fg); display: inline-flex; align-items: center; justify-content: center; }
+.chip svg { width: 16px; height: 16px; }
+.chip.brand { color: var(--primary); }
+.kpi-value { margin: 12px 0 6px; font-size: 28px; font-weight: 500; letter-spacing: -.01em; }
+.kpi-value.sm { font-size: 24px; }
+.kpi-delta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted-fg); }
+
+/* ---------- Pills / badges ---------- */
+.pill { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 500; padding: 2px 7px; border-radius: 999px; }
+.pill.up { background: rgba(47,147,103,.12); color: var(--success); }
+.pill.down { background: rgba(207,59,52,.12); color: var(--danger); }
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge.soft { background: var(--secondary); color: #444; }
+.badge.brand { background: var(--primary-weak); color: var(--primary); }
+.badge.success { background: rgba(47,147,103,.12); color: var(--success); }
+.badge.warn { background: rgba(224,138,30,.14); color: var(--warning); }
+.badge.danger { background: rgba(207,59,52,.12); color: var(--danger); }
+.badge.outline { border: 1px solid var(--border); color: #444; }
+
+/* ---------- Alert ---------- */
+.alert { display: flex; align-items: center; gap: 12px; border: 1px solid rgba(224,138,30,.4); background: rgba(224,138,30,.08); border-radius: var(--radius); padding: 12px 16px; font-size: 14px; }
+.alert a { color: var(--primary); font-weight: 500; }
+
+/* ---------- Tabs / legend / navb ---------- */
+.tabs { display: inline-flex; gap: 2px; background: var(--secondary); border-radius: 9px; padding: 3px; flex-wrap: wrap; }
+.tabs span { padding: 5px 12px; border-radius: 7px; font-size: 13px; color: var(--muted-fg); cursor: pointer; }
+.tabs span.on { background: #fff; color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+.legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted-fg); flex-wrap: wrap; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.navb { display: flex; align-items: center; gap: 6px; }
+.navb button { width: 30px; height: 30px; border: 1px solid var(--border); background: #fff; border-radius: 8px; cursor: pointer; }
+.navb .lbl { min-width: 130px; text-align: center; font-weight: 500; }
+
+/* ---------- rows / bars / summary ---------- */
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.msg { margin-top: 20px; border: 1px solid var(--border); background: #faf9f7; border-radius: 10px; padding: 14px 16px; font-size: 14px; }
+.bar-track { height: 8px; border-radius: 999px; background: var(--secondary); overflow: hidden; margin-top: 8px; position: relative; }
+.bar-fill { height: 100%; border-radius: 999px; background: var(--primary); }
+.bar-fill.ok { background: var(--success); }
+.bar-fill.warn { background: var(--warning); }
+.bar-fill.danger { background: var(--danger); }
+.marker { position: absolute; top: -2px; width: 2px; height: 12px; background: rgba(0,0,0,.35); }
+.summary { margin-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.summary .lbl { font-size: 12px; color: var(--muted-fg); }
+.summary .val { font-size: 16px; font-weight: 600; }
+.hub-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; padding: 24px; }
+.hub-value { font-size: 30px; font-weight: 500; letter-spacing: -.01em; }
+.dist + .dist { margin-top: 16px; }
+.dist small { color: var(--muted-fg); }
+.softbox { background: #faf9f7; border-radius: 8px; padding: 8px 12px; }
+
+/* ---------- listas / avatares ---------- */
+.influ { display: flex; align-items: center; gap: 12px; }
+.influ + .influ { margin-top: 12px; }
+.rank { width: 16px; color: var(--muted-fg); font-size: 12px; }
+.av2 { width: 36px; height: 36px; border-radius: 50%; background: var(--secondary); color: var(--muted-fg); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; flex: 0 0 36px; }
+
+/* ---------- tabelas ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted-fg); font-weight: 500; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover { background: #faf9f7; }
+th.r, td.r { text-align: right; }
+
+/* ---------- donut ---------- */
+.donut-wrap { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.donut-legend { flex: 1; min-width: 180px; }
+.donut-legend .row { font-size: 14px; }
+.donut-legend .row + .row { margin-top: 10px; }
+
+/* ---------- form ---------- */
+.field label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.input { width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; font: inherit; background: #fff; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.seg .opt { display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; }
+.seg .opt.on { border-color: var(--primary); background: rgba(186,64,115,.05); }
+
+.note { max-width: var(--maxw); margin: 0 auto; padding: 8px 32px 40px; color: #9a9a9a; font-size: 12px; }
+.empty { border: 1px dashed var(--border); border-radius: 12px; padding: 48px; text-align: center; color: var(--muted-fg); }
+
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+  .kpis, .kpis.k3 { grid-template-columns: repeat(2, 1fr); }
+  .two, .three, .hub-grid { grid-template-columns: 1fr; }
+  .summary { grid-template-columns: repeat(2, 1fr); }
+}
+</style></head>
+<body><div class="app"><aside class="sidebar">
+  <a class="logo" href="index.html" style="text-decoration:none;color:inherit">
+    <svg viewBox="0 0 48 48" aria-label="RIZO"><g fill="currentColor" font-family="Unbounded, sans-serif" font-weight="700" font-size="19" text-anchor="middle"><text x="13" y="21">R</text><text x="36" y="21">I</text><text x="13" y="45">Z</text><text x="36" y="45">O</text></g></svg>
+    <div class="wm"><b>RIZO</b><span>Performance</span></div>
+  </a>
+  <nav><div class="nav-group"><p>Principal</p><a class="nav-item" href="index.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Visão Geral</a><a class="nav-item" href="comercial.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1"/></svg>Comercial</a><a class="nav-item active" href="financeiro.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Financeiro</a></div><div class="nav-group"><p>Operação</p><a class="nav-item" href="producao.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 8l-6 4 6 4V8z"/></svg>Produção</a><a class="nav-item" href="contratos.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6"/></svg>Contratos</a><a class="nav-item" href="recebimentos.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Recebimentos</a><a class="nav-item" href="influenciadores.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2 21a7 7 0 0114 0"/><circle cx="18" cy="9" r="2"/></svg>Influenciadores</a><a class="nav-item" href="marcas.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/></svg>Marcas</a></div><div class="nav-group"><p>Insights</p><a class="nav-item" href="relatorios.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 5 5 .5-4 3.5 1.5 5L12 14l-4.5 3 1.5-5-4-3.5 5-.5z"/></svg>Relatórios</a><a class="nav-item" href="configuracoes.html"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.5-2-3.4-2.3.9a7 7 0 00-1.7-1L16 3H8l-.9 2.5a7 7 0 00-1.7 1l-2.3-.9-2 3.4L3.1 11a7 7 0 000 2l-2 1.5 2 3.4 2.3-.9a7 7 0 001.7 1L8 21h8l.9-2.5a7 7 0 001.7-1l2.3.9 2-3.4-2-1.5c.1-.3.1-.6.1-1z"/></svg>Configurações</a></div></nav>
+  <div class="sidebar-foot"><span class="dot"></span><div style="line-height:1.2"><div style="font-size:12px;font-weight:500">Dados simulados</div><div style="font-size:11px;color:var(--muted-fg)">Ambiente demo</div></div></div>
+</aside><div class="content"><header class="topbar"><div class="topbar-inner">
+  <div><h1 class="page-title">Financeiro<span class="live"><span class="pulse"></span>Ao vivo</span></h1><p class="page-sub">Receita, recebimentos e ticket médio</p></div>
+  <div class="spacer"></div>
+  <button class="btn">Este mês ▾</button>
+  <button class="btn">Filtros</button>
+  <button class="btn icon" title="Atualizar">⟳</button>
+  <button class="btn icon" title="Tema">☾</button>
+  <button class="btn" style="gap:8px;padding-left:6px"><span class="avatar">LP</span> Lucas Provesi</button>
+</div></header>
+<main class="main stack"><section class="kpis"><div class="card pad"><div class="kpi-label">Recebido no mês<span class="chip "><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M16 12h.01M2 10h20"/></svg></span></div><div class="kpi-value  tnum">R$ 1,2 mi</div><div class="kpi-delta"><span class="pill up">↑ +6,2%</span> vs. mês anterior</div></div><div class="card pad"><div class="kpi-label">A receber<span class="chip "><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="kpi-value  tnum">R$ 720 mil</div><div class="kpi-delta"><span class="pill up">↑ +4,8%</span> em aberto</div></div><div class="card pad"><div class="kpi-label">Vencidos<span class="chip "><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></span></div><div class="kpi-value  tnum">R$ 330 mil</div><div class="kpi-delta"><span class="pill down">↓ -12,5%</span> vs. mês anterior</div></div><div class="card pad"><div class="kpi-label">Ticket médio<span class="chip "><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l2-1 2 1 2-1 2 1 2-1 2 1V3l-2 1-2-1-2 1-2-1-2 1z"/></svg></span></div><div class="kpi-value  tnum">R$ 68.000</div><div class="kpi-delta"><span class="pill up">↑ +3,1%</span> vs. mês anterior</div></div></section><section class="card "><div class="card-head"><h3>Receita mensal</h3><p>Recebido x previsto nos últimos meses.</p></div><div class="card-body"><svg viewBox="0 0 960 260" width="100%" height="260">
+<g stroke="#eee" stroke-dasharray="3 3"><line x1="70" y1="30" x2="940" y2="30"/><line x1="70" y1="130" x2="940" y2="130"/><line x1="70" y1="230" x2="940" y2="230"/></g>
+<rect x="99" y="120" width="73" height="110" rx="6" fill="var(--chart-1)"/><rect x="246" y="94" width="73" height="136" rx="6" fill="var(--chart-1)"/><rect x="393" y="74" width="73" height="156" rx="6" fill="var(--chart-1)"/><rect x="539" y="54" width="73" height="176" rx="6" fill="var(--chart-1)"/><rect x="686" y="30" width="73" height="200" rx="6" fill="var(--chart-1)"/><rect x="833" y="46" width="73" height="184" rx="6" fill="var(--chart-1)"/><polyline points="136,120 283,98 429,82 576,66 723,40 869,20" fill="none" stroke="#c9a24a" stroke-width="2" stroke-dasharray="5 4"/><g fill="#9a9a9a" font-size="12" text-anchor="middle"><text x="136" y="252">Fev</text><text x="283" y="252">Mar</text><text x="429" y="252">Abr</text><text x="576" y="252">Mai</text><text x="723" y="252">Jun</text><text x="869" y="252">Jul</text></g></svg></div></section><section class="grid two"><section class="card "><div class="card-head"><h3>Contratos fechados</h3><p>Volume mensal de contratos assinados.</p></div><div class="card-body"><svg viewBox="0 0 960 260" width="100%" height="260">
+<g stroke="#eee" stroke-dasharray="3 3"><line x1="70" y1="30" x2="940" y2="30"/><line x1="70" y1="130" x2="940" y2="130"/><line x1="70" y1="230" x2="940" y2="230"/></g>
+<rect x="99" y="120" width="73" height="110" rx="6" fill="var(--chart-1)"/><rect x="246" y="100" width="73" height="130" rx="6" fill="var(--chart-1)"/><rect x="393" y="80" width="73" height="150" rx="6" fill="var(--chart-1)"/><rect x="539" y="70" width="73" height="160" rx="6" fill="var(--chart-1)"/><rect x="686" y="40" width="73" height="190" rx="6" fill="var(--chart-1)"/><rect x="833" y="50" width="73" height="180" rx="6" fill="var(--chart-1)"/><g fill="#9a9a9a" font-size="12" text-anchor="middle"><text x="136" y="252">Fev</text><text x="283" y="252">Mar</text><text x="429" y="252">Abr</text><text x="576" y="252">Mai</text><text x="723" y="252">Jun</text><text x="869" y="252">Jul</text></g></svg></div></section><section class="card "><div class="card-head"><h3>Ticket médio</h3><p>Evolução do valor médio por contrato.</p></div><div class="card-body"><svg viewBox="0 0 960 240" width="100%" height="240"><defs><linearGradient id="fa" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ba4073" stop-opacity="0.18"/><stop offset="100%" stop-color="#ba4073" stop-opacity="0"/></linearGradient></defs>
+<g stroke="#eee" stroke-dasharray="3 3"><line x1="60" y1="40" x2="940" y2="40"/><line x1="60" y1="120" x2="940" y2="120"/><line x1="60" y1="200" x2="940" y2="200"/></g>
+<path d="M60 190 C 200 180, 360 160, 500 150 S 800 120, 940 70 L 940 210 L 60 210 Z" fill="url(#fa)"/>
+<path d="M60 190 C 200 180, 360 160, 500 150 S 800 120, 940 70" fill="none" stroke="var(--chart-1)" stroke-width="2.5"/></svg></div></section><section class="card "><div class="card-head"><h3>Receita por influenciador</h3><p>Participação no faturamento do período.</p></div><div class="card-body"><div class="dist"><div class="row"><strong>Júlia Prado</strong><span class="tnum">R$ 420 mil <small>23%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div></div><div class="dist"><div class="row"><strong>Lucas Franco</strong><span class="tnum">R$ 360 mil <small>20%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div><div class="dist"><div class="row"><strong>Aline Torres</strong><span class="tnum">R$ 295 mil <small>16%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:61%"></div></div></div><div class="dist"><div class="row"><strong>Pedro Henrique</strong><span class="tnum">R$ 240 mil <small>13%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div></div><div class="dist"><div class="row"><strong>Mariana Lopes</strong><span class="tnum">R$ 205 mil <small>11%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:43%"></div></div></div><div class="dist"><div class="row"><strong>Outros</strong><span class="tnum">R$ 480 mil <small>26%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div></div></section><section class="card "><div class="card-head"><h3>Receita por marca</h3><p>Participação no faturamento do período.</p></div><div class="card-body"><div class="dist"><div class="row"><strong>NovaTech</strong><span class="tnum">R$ 380 mil <small>19%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:66%"></div></div></div><div class="dist"><div class="row"><strong>Bloom Beauty</strong><span class="tnum">R$ 340 mil <small>17%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:59%"></div></div></div><div class="dist"><div class="row"><strong>FitLife</strong><span class="tnum">R$ 285 mil <small>14%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:49%"></div></div></div><div class="dist"><div class="row"><strong>Urban Wear</strong><span class="tnum">R$ 230 mil <small>12%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div></div><div class="dist"><div class="row"><strong>CaféÔro</strong><span class="tnum">R$ 190 mil <small>10%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:33%"></div></div></div><div class="dist"><div class="row"><strong>Outras</strong><span class="tnum">R$ 575 mil <small>29%</small></span></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div></div></section><section class="card "><div class="card-head"><h3>Contas a receber</h3><p>Distribuição por faixa de vencimento.</p></div><div class="card-body"><div class="dist"><div class="row"><span><strong>A vencer</strong> <span class="badge soft" style="font-size:10px">24</span></span><strong class="tnum">R$ 720.000</strong></div><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div><div class="dist"><div class="row"><span><strong>1–15 dias</strong> <span class="badge danger" style="font-size:10px">7</span></span><strong class="tnum">R$ 180.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:25%"></div></div></div><div class="dist"><div class="row"><span><strong>16–30 dias</strong> <span class="badge danger" style="font-size:10px">4</span></span><strong class="tnum">R$ 96.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:13%"></div></div></div><div class="dist"><div class="row"><span><strong>+30 dias</strong> <span class="badge danger" style="font-size:10px">2</span></span><strong class="tnum">R$ 54.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:8%"></div></div></div></div></section><section class="card" style="border-color:rgba(207,59,52,.3);background:rgba(207,59,52,.02)"><div class="card-head" style="border-color:rgba(207,59,52,.2)"><h3 style="display:flex;align-items:center;gap:8px"><span style="color:var(--danger)">⚠</span> Recebimentos vencidos</h3><p>Total em atraso que requer atenção.</p></div><div class="card-body"><p style="font-size:30px;font-weight:600;color:var(--danger);margin:0" class="tnum">R$ 330.000</p><p class="muted" style="margin:4px 0 16px">3 faixas com pendências · 13 recebimentos</p><div class="dist"><div class="row"><span><strong>1–15 dias</strong> <span class="badge danger" style="font-size:10px">7</span></span><strong class="tnum">R$ 180.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:100%"></div></div></div><div class="dist"><div class="row"><span><strong>16–30 dias</strong> <span class="badge danger" style="font-size:10px">4</span></span><strong class="tnum">R$ 96.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:53%"></div></div></div><div class="dist"><div class="row"><span><strong>+30 dias</strong> <span class="badge danger" style="font-size:10px">2</span></span><strong class="tnum">R$ 54.000</strong></div><div class="bar-track"><div class="bar-fill danger" style="width:30%"></div></div></div></div></section></section></main>
+<p class="note">Referência estática de layout (HTML/CSS) — RIZO Performance · Financeiro. Implementação real em Next.js + TypeScript + Tailwind: github.com/Provesilucas/rizo-performance · rizo-performance.vercel.app</p>
+</div></div></body></html>
