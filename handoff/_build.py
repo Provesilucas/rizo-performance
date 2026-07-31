@@ -6,9 +6,138 @@ Rode:  python3 handoff/_build.py   (a partir da raiz do projeto)
 """
 import os
 
+import os
+import json
+import calendar
+import datetime
+
 OUT = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(OUT, "assets", "rizo.css"), encoding="utf-8") as _f:
     CSS = _f.read()
+with open(os.path.join(OUT, "assets", "rizo.js"), encoding="utf-8") as _f:
+    JS = _f.read()
+
+# ================================================================ DADOS (JS)
+MT = 1_500_000
+CLOSED_2026 = [1_420_000, 1_380_000, 1_550_000, 1_610_000, 1_660_000, 1_720_000]
+CLOSED_2025 = [1_300_000, 1_250_000, 1_400_000, 1_450_000, 1_500_000, 1_550_000,
+               1_600_000, 1_580_000, 1_620_000, 1_680_000, 1_720_000, 1_800_000]
+JUL_REAL, JUL_PROJ, CUR_DAY = 535_000, 1_658_000, 10
+MSHORT = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+MFULL = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+         "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+REF = datetime.date(2026, 7, 11)
+
+
+def _realized_month(year, m):
+    if year == 2025:
+        return CLOSED_2025[m]
+    if m < 6:
+        return CLOSED_2026[m]
+    if m == 6:
+        return JUL_REAL
+    return None
+
+
+def _summary(target, realized, elapsed):
+    rp = realized / target * 100 if target else 0
+    pace = rp - elapsed
+    proj = round(realized / (elapsed / 100)) if elapsed > 0 else target
+    status = "above" if pace > 3 else "below" if pace < -3 else "on-track"
+    a = "{:.1f}".format(abs(pace)).replace(".", ",")
+    if status == "above":
+        msg = "Acima do esperado — " + a + " p.p. à frente do ritmo ideal."
+    elif status == "below":
+        msg = "Abaixo do esperado — " + a + " p.p. atrás do ritmo ideal."
+    else:
+        msg = "Dentro do esperado — ritmo alinhado à meta do período."
+    return {"target": target, "realized": realized, "projection": proj,
+            "realizedPct": round(rp, 1), "expectedPct": round(elapsed, 1),
+            "pace": round(pace, 1), "status": status, "message": msg}
+
+
+def _month_inst(year, m):
+    days = calendar.monthrange(year, m + 1)[1]
+    is_cur = year == 2026 and m == 6
+    is_past = year < 2026 or (year == 2026 and m < 6)
+    if is_cur:
+        cur, rt, pt, el_ = CUR_DAY, JUL_REAL, JUL_PROJ, round(CUR_DAY / days * 100, 1)
+    elif is_past:
+        cur = days; rt = _realized_month(year, m) or 0; pt = rt; el_ = 100
+    else:
+        cur, rt, pt, el_ = 0, 0, MT, 0
+    series = []
+    for d in range(1, days + 1):
+        t = round(MT / days * d)
+        r = p = None
+        if cur > 0 and d <= cur:
+            r = round(rt * d / cur)
+            if d == cur:
+                p = r
+        elif d > cur:
+            denom = days - cur
+            p = round(rt + (pt - rt) * ((d - cur) / denom)) if denom > 0 else pt
+        series.append({"x": "%02d" % d, "t": t, "r": r, "p": p})
+    return {"label": "%s %d" % (MFULL[m], year), "isCurrent": is_cur,
+            "targetLabel": "Meta do mês", "series": series,
+            "sum": _summary(MT, rt, el_)}
+
+
+def _elapsed(year, m0, m1):
+    start = datetime.date(year, m0 + 1, 1)
+    end = datetime.date(year + 1, 1, 1) if m1 == 11 else datetime.date(year, m1 + 2, 1)
+    p = (REF - start).days / (end - start).days * 100
+    return round(max(0, min(100, p)), 1)
+
+
+def _multi_inst(year, months, label, target_label):
+    mreal = [_realized_month(year, mm) for mm in months]
+    rt = sum(x or 0 for x in mreal)
+    tgt = MT * len(months)
+    el_ = _elapsed(year, months[0], months[-1])
+    summ = _summary(tgt, rt, el_)
+    pt = summ["projection"] if el_ > 0 else tgt
+    last = -1
+    for i, v in enumerate(mreal):
+        if v is not None:
+            last = i
+    r_at_last = sum(mreal[k] or 0 for k in range(last + 1))
+    remaining = len(months) - 1 - last
+    step = (pt - r_at_last) / remaining if remaining > 0 else 0
+    series, tacc, racc = [], 0, 0
+    for i, mm in enumerate(months):
+        tacc += MT
+        r = p = None
+        if i <= last and mreal[i] is not None:
+            racc += mreal[i]; r = round(racc)
+            if i == last:
+                p = r
+        elif i > last:
+            p = round(r_at_last + step * (i - last))
+        series.append({"x": MSHORT[mm], "t": round(tacc), "r": r, "p": p})
+    return {"label": label, "isCurrent": 0 < el_ < 100, "targetLabel": target_label,
+            "series": series, "sum": summ}
+
+
+YEARS = [2025, 2026]
+QUARTERS = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]
+SEMS = [[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11]]
+GOAL = {
+    "month": [_month_inst(y, m) for y in YEARS for m in range(12)],
+    "quarter": [_multi_inst(y, q, "%dº trimestre %d" % (i + 1, y), "Meta do trimestre")
+                for y in YEARS for i, q in enumerate(QUARTERS)],
+    "semester": [_multi_inst(y, s, "%dº semestre %d" % (i + 1, y), "Meta do semestre")
+                 for y in YEARS for i, s in enumerate(SEMS)],
+    "year": [_multi_inst(y, list(range(12)), str(y), "Meta do ano") for y in YEARS],
+}
+REVENUE = [
+    {"label": "Fev", "received": 780000, "forecast": 820000, "prev": 640000},
+    {"label": "Mar", "received": 910000, "forecast": 900000, "prev": 720000},
+    {"label": "Abr", "received": 1020000, "forecast": 1050000, "prev": 810000},
+    {"label": "Mai", "received": 1140000, "forecast": 1120000, "prev": 950000},
+    {"label": "Jun", "received": 1310000, "forecast": 1280000, "prev": 1060000},
+    {"label": "Jul", "received": 1240000, "forecast": 1658000, "prev": 1120000},
+]
 
 # ---------------------------------------------------------------- ícones (nav)
 IC = {
@@ -91,15 +220,23 @@ def topbar(title, sub):
     return f'''<header class="topbar"><div class="topbar-inner">
   <div><h1 class="page-title">{title}<span class="live"><span class="pulse"></span>Ao vivo</span></h1><p class="page-sub">{sub}</p></div>
   <div class="spacer"></div>
-  <button class="btn">Este mês ▾</button>
+  <span data-dropdown style="position:relative"><button class="btn" data-dd-btn><span>Este mês </span>▾</button>
+    <div data-dd-menu style="display:none;position:absolute;right:0;top:42px;z-index:20;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:6px;min-width:150px;box-shadow:0 10px 30px -10px rgba(0,0,0,.15)">
+      <div data-dd-item class="nav-item" style="padding:6px 10px">Este mês</div><div data-dd-item class="nav-item" style="padding:6px 10px">Mês anterior</div><div data-dd-item class="nav-item" style="padding:6px 10px">Trimestre</div><div data-dd-item class="nav-item" style="padding:6px 10px">Ano</div></div></span>
   <button class="btn">Filtros</button>
   <button class="btn icon" title="Atualizar">⟳</button>
-  <button class="btn icon" title="Tema">☾</button>
+  <button class="btn icon" id="theme-toggle" title="Alternar tema">☾</button>
   <button class="btn" style="gap:8px;padding-left:6px"><span class="avatar">LP</span> Lucas Provesi</button>
 </div></header>'''
 
 
-def page(active, title, sub, main):
+def page(active, title, sub, main, data=None):
+    datajs = ""
+    if data:
+        parts = "".join(
+            "window.%s=%s;" % (k, json.dumps(v, ensure_ascii=False)) for k, v in data.items()
+        )
+        datajs = "<script>%s</script>" % parts
     return f'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>{title} · RIZO Performance</title>
@@ -108,8 +245,8 @@ def page(active, title, sub, main):
 <style>{CSS}</style></head>
 <body><div class="app">{sidebar(active)}<div class="content">{topbar(title, sub)}
 <main class="main stack">{main}</main>
-<p class="note">Referência estática de layout (HTML/CSS) — RIZO Performance · {title}. Implementação real em Next.js + TypeScript + Tailwind: github.com/Provesilucas/rizo-performance · rizo-performance.vercel.app</p>
-</div></div></body></html>'''
+<p class="note">Handoff interativo (HTML/CSS/JS puro) — RIZO Performance · {title}. Implementação real em Next.js + TypeScript + Tailwind: github.com/Provesilucas/rizo-performance · rizo-performance.vercel.app</p>
+</div></div>{datajs}<script>{JS}</script></body></html>'''
 
 
 # ---------------------------------------------------------------- helpers UI
@@ -191,25 +328,38 @@ DONUT = '''<svg viewBox="0 0 200 200" width="180" height="180"><g transform="rot
 <text x="100" y="118" text-anchor="middle" font-size="12" fill="#9a9a9a">contratos</text></svg>'''
 
 
+GOAL_CARD = '''<section class="card"><div class="card-head">
+<div class="row" style="flex-wrap:wrap;gap:12px"><div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><h3>Evolução da Meta</h3><span id="goal-status" class="badge success">Acima do esperado</span><span id="goal-state" class="badge soft">Em andamento</span></div><p>Meta acumulada, realizado e projeção — navegue entre períodos para fechamento.</p></div>
+<div id="goal-tabs" class="tabs"><span data-range="month" class="on">Mês</span><span data-range="quarter">Trimestre</span><span data-range="semester">Semestre</span><span data-range="year">Ano</span></div></div>
+<div class="row" style="margin-top:14px;flex-wrap:wrap;gap:12px"><div class="navb"><button id="goal-prev">‹</button><span class="lbl" id="goal-label">Julho 2026</span><button id="goal-next">›</button></div>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn sm" id="goal-compare">⇄ Comparar</button>
+<div class="legend"><span><i style="background:var(--chart-5)"></i>Meta acumulada</span><span><i style="background:var(--chart-1)"></i>Realizado</span><span><i style="background:var(--chart-2)"></i>Projeção</span><span id="goal-cmp-legend" style="display:none"><i style="background:var(--warning)"></i>Ano anterior</span></div></div></div></div>
+<div class="card-body"><svg id="goal-chart" viewBox="0 0 960 300" width="100%" height="300"></svg>
+<div class="msg"><strong style="color:var(--primary)">↗</strong> <span id="goal-msg"></span>
+<div class="bar-track" style="margin-top:12px"><div id="gs-bar" class="bar-fill ok" style="width:0"></div><span id="gs-marker" class="marker" style="left:0"></span></div>
+<div class="row" style="margin-top:6px;font-size:12px;color:var(--muted-fg)"><span id="gs-realpct"></span><span id="gs-exppct"></span></div></div>
+<div class="summary"><div><div class="lbl" id="gs-target-label">Meta do mês</div><div class="val tnum" id="gs-target"></div></div><div><div class="lbl">Realizado</div><div class="val tnum" id="gs-real"></div></div><div><div class="lbl">Projeção</div><div class="val tnum" id="gs-proj"></div></div><div><div class="lbl">Diferença de ritmo</div><div class="val tnum" id="gs-pace"></div></div></div></div></section>'''
+
+def rev_card(title, sub):
+    return (f'<section class="card"><div class="card-head"><div class="row" style="flex-wrap:wrap;gap:12px">'
+            f'<div><h3>{title}</h3><p>{sub}</p></div>'
+            f'<div style="display:flex;align-items:center;gap:12px"><span id="rev-cmp-legend" class="legend" style="display:none"><span><i style="background:var(--chart-2)"></i>Recebido 2025</span></span>'
+            f'<button class="btn sm" id="rev-compare">⇄ Comparar 2025</button></div></div></div>'
+            f'<div class="card-body"><svg id="rev-chart" viewBox="0 0 960 280" width="100%" height="280"></svg></div></section>')
+
+
+REVENUE_CARD = rev_card("Faturamento da agência",
+                        "Receita mensal — recebido x previsto, com comparativo do ano anterior.")
+
+
 # ================================================================ CONTEÚDO
 def build_index():
     kpis = (kpi("Previsão do mês", "R$ 1,7 mi", "cal", up("+3,4%") + " vs. ritmo esperado")
             + kpi("Novos contratos no mês", "18", "file", up("+20,0%") + " vs. mês anterior")
             + '<div class="card pad"><div class="kpi-label">Top comercial do mês<span class="chip brand">' + icon("crown") + '</span></div><div class="kpi-value">Djony</div><div class="kpi-delta">Fechou <strong class="green tnum">R$ 36.500</strong> · 6 contratos</div></div>'
             + kpi("Acumulado no ano", "R$ 6,4 mi", "wallet", up("+9,4%") + " vs. ano anterior"))
-    goal = f'''<section class="card"><div class="card-head">
-<div class="row"><div><div style="display:flex;align-items:center;gap:8px"><h3>Evolução da Meta</h3><span class="badge success">Acima do esperado</span><span class="badge soft">Em andamento</span></div><p>Meta acumulada, realizado e projeção — navegue entre períodos para fechamento.</p></div>
-<div class="tabs"><span class="on">Mês</span><span>Trimestre</span><span>Semestre</span><span>Ano</span></div></div>
-<div class="row" style="margin-top:14px"><div class="navb"><button>‹</button><span class="lbl">Julho 2026</span><button>›</button></div>
-<div class="legend"><span><i style="background:var(--chart-5)"></i>Meta acumulada</span><span><i style="background:var(--chart-1)"></i>Realizado</span><span><i style="background:var(--chart-2)"></i>Projeção</span></div></div></div>
-<div class="card-body">{LINE_CHART}
-<div class="msg"><strong style="color:var(--primary)">↗</strong> Acima do esperado — 3,4 p.p. à frente do ritmo ideal.
-<div class="bar-track" style="margin-top:12px"><div class="bar-fill ok" style="width:35.7%"></div><span class="marker" style="left:32.3%"></span></div>
-<div class="row" style="margin-top:6px;font-size:12px;color:var(--muted-fg)"><span>Realizado 35,7%</span><span>Ritmo esperado 32,3%</span></div></div>
-<div class="summary"><div><div class="lbl">Meta do mês</div><div class="val tnum">R$ 1,5 mi</div></div><div><div class="lbl">Realizado</div><div class="val tnum">R$ 535 mil</div></div><div><div class="lbl">Projeção</div><div class="val tnum">R$ 1,7 mi</div></div><div><div class="lbl">Diferença de ritmo</div><div class="val tnum">+3,4%</div></div></div></div></section>'''
-    fat = card("Faturamento da agência", "Receita mensal — recebido x previsto, com comparativo do ano anterior.",
-               bar_chart([.55, .68, .78, .88, 1.0, .92], ["Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
-                         line=[.55, .66, .74, .82, .95, 1.05]))
+    goal = GOAL_CARD
+    fat = REVENUE_CARD
     hub = f'''<section class="card hub"><div class="hub-grid">
 <div><div style="display:flex;align-items:center;gap:8px"><span class="chip brand">{icon("trend")}</span><h3 style="margin:0;font-size:16px">Hub externo</h3><span class="badge soft">Prioridade estratégica</span></div>
 <p class="muted" style="margin:6px 0 0;font-size:14px">Influenciadores fora do casting exclusivo — foco de crescimento para a saúde financeira da agência.</p>
@@ -232,18 +382,32 @@ def build_index():
     return page("index.html", "Visão Geral", "Panorama executivo do mês",
                 alert + f'<section class="kpis">{kpis}</section>' + goal + fat + hub
                 + f'<section class="grid two">{metas}{marcas}</section>'
-                + f'<section class="grid two">{setores}{influ}</section>')
+                + f'<section class="grid two">{setores}{influ}</section>',
+                data={"GOAL": GOAL, "REVENUE": REVENUE})
 
 
-METAS_BODY = '''
-<div class="row"><div style="display:flex;align-items:center;gap:12px"><span class="av2">DJ</span><div><div style="display:flex;align-items:center;gap:8px"><strong>Djony</strong><span class="badge warn">♛ Top do mês</span></div><small class="muted">6 contratos · R$ 6.083 ticket médio</small></div></div><div style="text-align:right"><div style="font-size:12px;color:var(--muted-fg)">Meta</div><strong class="tnum">R$ 40.000 ✎</strong></div></div>
-<div class="row" style="margin-top:10px;font-size:14px"><strong class="tnum">R$ 36.500</strong><span class="muted">91% da meta</span></div>
-<div class="bar-track"><div class="bar-fill" style="width:91%"></div></div>
-<div class="row softbox" style="margin-top:8px;font-size:14px"><span class="muted">Acumulado no ano</span><strong class="tnum">R$ 420 mil <span style="font-weight:400;font-size:12px;color:var(--muted-fg)">· 71 contratos</span></strong></div>
-<div class="row" style="margin-top:24px"><div style="display:flex;align-items:center;gap:12px"><span class="av2">NR</span><div><strong>Nicole Reig</strong><div><small class="muted">5 contratos · R$ 9.320 ticket médio</small></div></div></div><div style="text-align:right"><div style="font-size:12px;color:var(--muted-fg)">Meta</div><strong class="tnum">R$ 55.000 ✎</strong></div></div>
-<div class="row" style="margin-top:10px;font-size:14px"><strong class="tnum">R$ 46.600</strong><span class="muted">85% da meta</span></div>
-<div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
-<div class="row softbox" style="margin-top:8px;font-size:14px"><span class="muted">Acumulado no ano</span><strong class="tnum">R$ 510 mil <span style="font-weight:400;font-size:12px;color:var(--muted-fg)">· 63 contratos</span></strong></div>'''
+def meta_person(pid, name, ini, contracts, ticket, closed, goal, year_val, year_ct, top, mt=""):
+    badge = '<span class="badge warn">♛ Top do mês</span>' if top else ''
+    return (f'<div data-meta="{pid}" data-closed="{closed}" data-goal="{goal}"{mt}>'
+            f'<div class="row"><div style="display:flex;align-items:center;gap:12px"><span class="av2">{ini}</span>'
+            f'<div><div style="display:flex;align-items:center;gap:8px"><strong>{name}</strong>{badge}</div>'
+            f'<small class="muted">{contracts} contratos · {ticket} ticket médio</small></div></div>'
+            f'<div style="text-align:right"><div style="font-size:12px;color:var(--muted-fg)">Meta</div>'
+            f'<button class="meta-edit" style="background:none;border:0;cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:6px">'
+            f'<strong class="meta-value tnum"></strong> <span style="color:var(--muted-fg)">✎</span></button></div></div>'
+            f'<div class="row" style="margin-top:10px;font-size:14px"><strong class="tnum">{money_str(closed)}</strong>'
+            f'<span class="meta-pct muted"></span></div>'
+            f'<div class="bar-track"><div class="meta-bar bar-fill" style="width:0"></div></div>'
+            f'<div class="row softbox" style="margin-top:8px;font-size:14px"><span class="muted">Acumulado no ano</span>'
+            f'<strong class="tnum">{year_val} <span style="font-weight:400;font-size:12px;color:var(--muted-fg)">· {year_ct} contratos</span></strong></div></div>')
+
+
+def money_str(v):
+    return "R$ " + format(v, ",").replace(",", ".")
+
+
+METAS_BODY = (meta_person("djony", "Djony", "DJ", 6, "R$ 6.083", 36500, 40000, "R$ 420 mil", 71, True)
+              + meta_person("nicole", "Nicole Reig", "NR", 5, "R$ 9.320", 46600, 55000, "R$ 510 mil", 63, False, mt=' style="margin-top:24px"'))
 
 
 def _influ_row(i, ini, name, rev, n):
@@ -305,9 +469,7 @@ def build_financeiro():
             + kpi("A receber", "R$ 720 mil", "clock", up("+4,8%") + " em aberto")
             + kpi("Vencidos", "R$ 330 mil", "alert", down("-12,5%") + " vs. mês anterior")
             + kpi("Ticket médio", "R$ 68.000", "receipt", up("+3,1%") + " vs. mês anterior"))
-    receita = card("Receita mensal", "Recebido x previsto nos últimos meses.",
-                   bar_chart([.55, .68, .78, .88, 1.0, .92], ["Fev", "Mar", "Abr", "Mai", "Jun", "Jul"],
-                             line=[.55, .66, .74, .82, .95, 1.05]))
+    receita = rev_card("Receita mensal", "Recebido x previsto nos últimos meses.")
     contratos = card("Contratos fechados", "Volume mensal de contratos assinados.",
                      bar_chart([.55, .65, .75, .80, .95, .90], ["Fev", "Mar", "Abr", "Mai", "Jun", "Jul"]))
     ticket = card("Ticket médio", "Evolução do valor médio por contrato.", area_chart())
@@ -331,7 +493,8 @@ def build_financeiro():
     vencidos = f'''<section class="card" style="border-color:rgba(207,59,52,.3);background:rgba(207,59,52,.02)"><div class="card-head" style="border-color:rgba(207,59,52,.2)"><h3 style="display:flex;align-items:center;gap:8px"><span style="color:var(--danger)">⚠</span> Recebimentos vencidos</h3><p>Total em atraso que requer atenção.</p></div><div class="card-body"><p style="font-size:30px;font-weight:600;color:var(--danger);margin:0" class="tnum">R$ 330.000</p><p class="muted" style="margin:4px 0 16px">3 faixas com pendências · 13 recebimentos</p>{bucket("1–15 dias", 7, "R$ 180.000", 100, True) + bucket("16–30 dias", 4, "R$ 96.000", 53, True) + bucket("+30 dias", 2, "R$ 54.000", 30, True)}</div></section>'''
     return page("financeiro.html", "Financeiro", "Receita, recebimentos e ticket médio",
                 f'<section class="kpis">{kpis}</section>' + receita
-                + f'<section class="grid two">{contratos}{ticket}{inf}{marca}{receber}{vencidos}</section>')
+                + f'<section class="grid two">{contratos}{ticket}{inf}{marca}{receber}{vencidos}</section>',
+                data={"REVENUE": REVENUE})
 
 
 def build_producao():
@@ -383,18 +546,21 @@ def build_contratos():
         ("RZ-2026-0180", "Principal", "CaféÔro", "Rafael Dias", "Beatriz Nunes", "R$ 48.000", ("Assinado", "success"), ("Ressalvas", "warn"), "30 jun"),
         ("RZ-2026-0179", "Principal", "NovaTech", "Mariana Lopes", "Diego Martins", "R$ 61.000", ("Rascunho", "soft"), ("Reprovado", "danger"), "—"),
     ]
+    stkey = {"Assinado": "signed", "Ativo": "active", "Enviado": "sent",
+             "Rascunho": "draft", "Concluído": "completed"}
     for code, orig, brand, inf, com, val, (st, stc), (lg, lgc), sig in data:
         ob = "brand" if orig == "Principal" else "soft"
-        trows += (f'<tr><td class="tnum" style="font-weight:500">{code}</td>'
+        trows += (f'<tr data-status="{stkey.get(st, "")}"><td class="tnum" style="font-weight:500">{code}</td>'
                   f'<td><span class="badge {ob}">{orig}</span></td><td>{brand}</td>'
                   f'<td class="muted">{inf}</td><td class="muted">{com}</td>'
                   f'<td class="r tnum" style="font-weight:600">{val}</td>'
                   f'<td><span class="badge {stc}">{st}</span></td>'
                   f'<td><span class="badge {lgc}">{lg}</span></td>'
                   f'<td class="r muted tnum">{sig}</td></tr>')
-    tabs = '<div class="tabs" style="margin-bottom:16px"><span class="on">Todos</span><span>Ativos</span><span>Assinados</span><span>Enviados</span><span>Rascunhos</span><span>Concluídos</span></div>'
-    tabela = (f'<section><div class="row" style="margin-bottom:16px"><div class="tabs"><span class="on">Todos</span><span>Ativos</span><span>Assinados</span><span>Enviados</span><span>Rascunhos</span></div>'
-              f'<input class="input" style="width:240px" placeholder="Buscar contrato…"/></div>'
+    tabela = (f'<section data-table><div class="row" style="margin-bottom:16px;flex-wrap:wrap;gap:12px">'
+              f'<div class="tabs"><span class="on" data-filter="all">Todos</span><span data-filter="active">Ativos</span>'
+              f'<span data-filter="signed">Assinados</span><span data-filter="sent">Enviados</span><span data-filter="draft">Rascunhos</span></div>'
+              f'<input class="input" data-search style="width:240px" placeholder="Buscar contrato…"/></div>'
               f'<div class="card"><table><thead><tr><th>Contrato</th><th>Origem</th><th>Marca</th><th>Influenciador</th><th>Comercial</th><th class="r">Valor</th><th>Status</th><th>Jurídico</th><th class="r">Assinatura</th></tr></thead><tbody>{trows}</tbody></table></div></section>')
     return page("contratos.html", "Contratos", "Contratos e risco jurídico",
                 f'<section class="kpis k3">{kpis}</section>'
@@ -412,12 +578,14 @@ def build_recebimentos():
         ("04/07/2026", "#819 - NESTLÉ", "NESTLÉ", "Yasmin Castilho", "R$ 195.000", "29/06", ("Pago", "success")),
         ("01/07/2026", "#954 - CICATRIBEM", "CICATRIBEM", "Yasmin Castilho", "R$ 60.000", "01/07", ("A vencer", "warn")),
     ]
+    rkey = {"A vencer": "pending", "Vencido": "overdue", "Pago": "paid"}
     trows = ""
     for d, contract, brand, inf, val, due, (st, stc) in data:
-        trows += (f'<tr><td class="tnum">{d}</td><td class="tnum" style="font-weight:500">{contract}</td>'
+        trows += (f'<tr data-status="{rkey.get(st, "")}"><td class="tnum">{d}</td><td class="tnum" style="font-weight:500">{contract}</td>'
                   f'<td>{brand}</td><td class="muted">{inf}</td><td class="r tnum" style="font-weight:600">{val}</td>'
                   f'<td class="r muted tnum">{due}</td><td><span class="badge {stc}">{st}</span></td></tr>')
-    tabela = (f'<section><div class="tabs" style="margin-bottom:16px"><span class="on">Todos</span><span>A vencer</span><span>Vencidos</span><span>Pagos</span></div>'
+    tabela = (f'<section data-table><div class="tabs" style="margin-bottom:16px"><span class="on" data-filter="all">Todos</span>'
+              f'<span data-filter="pending">A vencer</span><span data-filter="overdue">Vencidos</span><span data-filter="paid">Pagos</span></div>'
               f'<div class="card"><table><thead><tr><th>Data</th><th>Contrato</th><th>Marca</th><th>Influenciador</th><th class="r">Valor</th><th class="r">Vencimento</th><th>Status</th></tr></thead><tbody>{trows}</tbody></table></div></section>')
     return page("recebimentos.html", "Recebimentos", "Contas a receber e vencidos",
                 f'<section class="kpis k3">{kpis}</section>' + tabela)
