@@ -86,8 +86,11 @@ export function ExternalHubCard({ hub }: { hub: ExternalHub }) {
       </p>
 
       <ul className="mt-4 space-y-3 border-t border-border/60 pt-3">
-        {hub.items.map((item) => (
-          <li key={item.handle} className="flex items-center justify-between">
+        {hub.items.map((item, index) => (
+          <li
+            key={`${item.handle}-${item.brand}-${index}`}
+            className="flex items-center justify-between"
+          >
             <div className="leading-tight">
               <p className="text-sm font-medium text-foreground">
                 {item.handle}

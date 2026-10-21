@@ -33,6 +33,8 @@ async function CommercialContent({ period }: { period: PeriodRange }) {
     0,
   );
 
+  const hasFunnel = Boolean(data.funnel && data.funnel.length > 0);
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -41,25 +43,28 @@ async function CommercialContent({ period }: { period: PeriodRange }) {
           label="Acumulado no ano"
           value={formatCurrencyCompact(yearTotal)}
           icon={Wallet}
-          delta={11.2}
           deltaLabel="vs. ano anterior"
         />
-        <StatCard
-          label="Pipeline em aberto"
-          value={formatCurrencyCompact(data.totalPipeline)}
-          icon={Filter}
-        />
-        <StatCard
-          label="Conversão global"
-          value={formatPercent(data.globalConversion)}
-          icon={TrendingUp}
-          deltaLabel="prospecção → fechado"
-        />
+        {data.totalPipeline !== undefined && (
+          <StatCard
+            label="Pipeline em aberto"
+            value={formatCurrencyCompact(data.totalPipeline)}
+            icon={Filter}
+          />
+        )}
+        {data.globalConversion !== undefined && (
+          <StatCard
+            label="Conversão global"
+            value={formatPercent(data.globalConversion)}
+            icon={TrendingUp}
+            deltaLabel="prospecção → fechado"
+          />
+        )}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div className={hasFunnel ? 'grid grid-cols-1 gap-6 lg:grid-cols-2' : ''}>
         <MetasComerciais salespeople={data.salespeople} />
-        <FunnelChart stages={data.funnel} />
+        {hasFunnel && <FunnelChart stages={data.funnel!} />}
       </div>
 
       <SectionHeader

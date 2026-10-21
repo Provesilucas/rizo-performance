@@ -88,12 +88,13 @@ export interface ExternalHub {
 }
 
 export interface CommercialData {
-  funnel: FunnelStage[];
   /** Comerciais da agência (metas, realizado, breakdown). */
   salespeople: Salesperson[];
   externalHub: ExternalHub;
-  /** Pipeline total em aberto. */
-  totalPipeline: number;
-  /** Conversão global prospecção -> fechamento (0-100). */
-  globalConversion: number;
+  /** Funil comercial. Opcional: a API de performance ainda não o fornece. */
+  funnel?: FunnelStage[];
+  /** Pipeline total em aberto. Opcional: ausente na API de performance. */
+  totalPipeline?: number;
+  /** Conversão global prospecção -> fechamento (0-100). Opcional na API. */
+  globalConversion?: number;
 }
