@@ -91,4 +91,6 @@ export const financialDataMock: FinancialData = {
   ],
   totalReceivable: 720_000,
   totalOverdue: 330_000,
+  yearRevenue: 8_400_000,
+  yearRevenuePrevYear: 7_680_000,
 };

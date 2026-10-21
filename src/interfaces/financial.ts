@@ -38,4 +38,8 @@ export interface FinancialData {
   totalReceivable: number;
   /** Total vencido. */
   totalOverdue: number;
+  /** Receita acumulada no ano corrente. */
+  yearRevenue: number;
+  /** Receita acumulada no mesmo período do ano anterior (comparativo). */
+  yearRevenuePrevYear: number;
 }

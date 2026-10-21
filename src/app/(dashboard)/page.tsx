@@ -37,8 +37,6 @@ interface PageProps {
   searchParams: { period?: string };
 }
 
-/** Data de referência dos dados simulados. */
-const REFERENCE_DATE = new Date('2026-07-11');
 const EXPIRY_WINDOW_DAYS = 60;
 
 async function DashboardContent({ period }: { period: PeriodRange }) {
@@ -65,14 +63,15 @@ async function DashboardContent({ period }: { period: PeriodRange }) {
 
   const topSeller = resolveTopSeller(commercial.data.salespeople);
 
-  // Receita acumulada no ano (soma do recebido mensal).
-  const yearRevenue = financial.data.monthlyRevenue.reduce(
-    (sum, m) => sum + m.received,
-    0,
-  );
+  // Receita acumulada no ano e variação real vs. mesmo período do ano anterior.
+  const { yearRevenue, yearRevenuePrevYear } = financial.data;
+  const yearDelta =
+    yearRevenuePrevYear > 0
+      ? ((yearRevenue - yearRevenuePrevYear) / yearRevenuePrevYear) * 100
+      : undefined;
 
   // Contratos a encerrar em até 60 dias (ou já encerrados e ainda ativos).
-  const limit = new Date(REFERENCE_DATE);
+  const limit = new Date();
   limit.setDate(limit.getDate() + EXPIRY_WINDOW_DAYS);
   const expiring = contracts.data.filter((c) => {
     if (!c.endsAt || c.status === 'completed' || c.status === 'canceled') {
@@ -116,7 +115,7 @@ async function DashboardContent({ period }: { period: PeriodRange }) {
           label="Acumulado no ano"
           value={formatCurrencyCompact(yearRevenue)}
           icon={Wallet}
-          delta={9.4}
+          delta={yearDelta}
           deltaLabel="vs. ano anterior"
         />
       </div>
